@@ -33,6 +33,10 @@ export interface InventoryItem {
   minThreshold: number;
   location: string;
   lastUpdated: string;
+  status: 'available' | 'low-stock' | 'out-of-stock';
+  supplier?: string;
+  costPerUnit: number;
+  unit: string;
 }
 
 export interface Guest {
@@ -150,7 +154,11 @@ export const mockInventory: InventoryItem[] = [
     quantity: 150,
     minThreshold: 50,
     location: 'Warehouse A',
-    lastUpdated: '2024-05-20'
+    lastUpdated: '2024-05-20',
+    status: 'available',
+    supplier: 'Office Supplies Co.',
+    costPerUnit: 25.99,
+    unit: 'piece'
   },
   {
     id: '2',
@@ -159,7 +167,11 @@ export const mockInventory: InventoryItem[] = [
     quantity: 5,
     minThreshold: 2,
     location: 'AV Room',
-    lastUpdated: '2024-05-18'
+    lastUpdated: '2024-05-18',
+    status: 'available',
+    supplier: 'Tech Audio Ltd.',
+    costPerUnit: 850.00,
+    unit: 'set'
   },
   {
     id: '3',
@@ -168,7 +180,11 @@ export const mockInventory: InventoryItem[] = [
     quantity: 8,
     minThreshold: 3,
     location: 'AV Room',
-    lastUpdated: '2024-05-19'
+    lastUpdated: '2024-05-19',
+    status: 'available',
+    supplier: 'Visual Tech Inc.',
+    costPerUnit: 1200.00,
+    unit: 'piece'
   },
   {
     id: '4',
@@ -177,7 +193,11 @@ export const mockInventory: InventoryItem[] = [
     quantity: 25,
     minThreshold: 10,
     location: 'Storage Room B',
-    lastUpdated: '2024-05-17'
+    lastUpdated: '2024-05-17',
+    status: 'available',
+    supplier: 'Event Decor Plus',
+    costPerUnit: 15.50,
+    unit: 'piece'
   },
   {
     id: '5',
@@ -186,7 +206,11 @@ export const mockInventory: InventoryItem[] = [
     quantity: 2,
     minThreshold: 5,
     location: 'Kitchen Storage',
-    lastUpdated: '2024-05-21'
+    lastUpdated: '2024-05-21',
+    status: 'low-stock',
+    supplier: 'Food Service Pro',
+    costPerUnit: 450.00,
+    unit: 'set'
   }
 ];
 
