@@ -6,10 +6,9 @@ export interface Event {
   date: string;
   time: string;
   location: string;
-  category: string;
   capacity: number;
-  budget: number;
   attendees: number;
+  budget: number;
   status: 'draft' | 'published' | 'completed';
   createdBy: string;
   imageUrl?: string;
@@ -21,9 +20,9 @@ export interface RSVP {
   guestName: string;
   email: string;
   status: 'pending' | 'accepted' | 'declined';
+  respondedAt?: string;
   dietaryRestrictions?: string;
   plusOne: boolean;
-  respondedAt?: string;
 }
 
 export interface InventoryItem {
@@ -31,70 +30,68 @@ export interface InventoryItem {
   name: string;
   category: string;
   quantity: number;
-  unit: string;
-  costPerUnit: number;
-  supplier?: string;
-  status: 'available' | 'low-stock' | 'out-of-stock';
+  minThreshold: number;
+  location: string;
   lastUpdated: string;
 }
 
 export interface Guest {
   id: string;
+  eventId: string;
   name: string;
   email: string;
   phone?: string;
-  rsvpStatus: 'pending' | 'accepted' | 'declined';
-  eventId: string;
+  invitedAt: string;
+  status: 'invited' | 'confirmed' | 'declined';
 }
 
+// Mock Events Data
 export const mockEvents: Event[] = [
   {
     id: '1',
-    title: 'Annual Company Retreat',
-    description: 'A weekend getaway for team building and strategic planning.',
+    title: 'Annual Tech Conference 2024',
+    description: 'Join us for the biggest tech conference of the year featuring industry leaders, innovative workshops, and networking opportunities.',
     date: '2024-06-15',
-    time: '09:00',
-    location: 'Mountain Resort, Colorado',
-    category: 'corporate',
-    capacity: 100,
-    budget: 15000,
-    attendees: 85,
+    time: '09:00 AM',
+    location: 'Convention Center, Downtown',
+    capacity: 500,
+    attendees: 324,
+    budget: 50000,
     status: 'published',
     createdBy: 'John Doe',
-    imageUrl: 'https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=800&h=400&fit=crop'
-  },
-  {
-    id: '2',
-    title: 'Product Launch Event',
-    description: 'Introducing our latest product line to stakeholders and media.',
-    date: '2024-06-22',
-    time: '18:00',
-    location: 'Convention Center, San Francisco',
-    category: 'conference',
-    capacity: 200,
-    budget: 25000,
-    attendees: 150,
-    status: 'published',
-    createdBy: 'Sarah Wilson',
     imageUrl: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop'
   },
   {
-    id: '3',
-    title: 'Team Building Workshop',
-    description: 'Interactive workshops to improve team collaboration.',
-    date: '2024-07-05',
-    time: '10:00',
-    location: 'Office Conference Room',
-    category: 'workshop',
+    id: '2',
+    title: 'Summer Team Building Retreat',
+    description: 'A fun-filled weekend retreat to strengthen team bonds and boost morale with outdoor activities and team challenges.',
+    date: '2024-07-20',
+    time: '10:00 AM',
+    location: 'Mountain Resort, Lake Tahoe',
     capacity: 50,
-    budget: 5000,
-    attendees: 35,
+    attendees: 42,
+    budget: 15000,
+    status: 'published',
+    createdBy: 'Sarah Smith',
+    imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&h=400&fit=crop'
+  },
+  {
+    id: '3',
+    title: 'Product Launch Event',
+    description: 'Exclusive launch event for our latest product line with live demos, presentations, and media coverage.',
+    date: '2024-08-10',
+    time: '06:00 PM',
+    location: 'Grand Ballroom, City Hotel',
+    capacity: 200,
+    attendees: 0,
+    budget: 25000,
     status: 'draft',
     createdBy: 'Mike Johnson',
-    imageUrl: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&h=400&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=400&fit=crop'
   }
 ];
 
+// Mock RSVPs Data
 export const mockRSVPs: RSVP[] = [
   {
     id: '1',
@@ -102,9 +99,9 @@ export const mockRSVPs: RSVP[] = [
     guestName: 'Alice Johnson',
     email: 'alice@example.com',
     status: 'accepted',
+    respondedAt: '2024-05-15T10:30:00Z',
     dietaryRestrictions: 'Vegetarian',
-    plusOne: true,
-    respondedAt: '2024-05-20T10:30:00Z'
+    plusOne: true
   },
   {
     id: '2',
@@ -116,72 +113,109 @@ export const mockRSVPs: RSVP[] = [
   },
   {
     id: '3',
-    eventId: '2',
-    guestName: 'Carol Davis',
+    eventId: '1',
+    guestName: 'Carol Williams',
     email: 'carol@example.com',
     status: 'declined',
-    respondedAt: '2024-05-18T14:15:00Z'
+    respondedAt: '2024-05-20T14:15:00Z',
+    plusOne: false
+  },
+  {
+    id: '4',
+    eventId: '2',
+    guestName: 'David Brown',
+    email: 'david@example.com',
+    status: 'accepted',
+    respondedAt: '2024-05-18T09:45:00Z',
+    dietaryRestrictions: 'Gluten-free',
+    plusOne: true
+  },
+  {
+    id: '5',
+    eventId: '2',
+    guestName: 'Eva Davis',
+    email: 'eva@example.com',
+    status: 'accepted',
+    respondedAt: '2024-05-22T16:20:00Z',
+    plusOne: false
   }
 ];
 
+// Mock Inventory Data
 export const mockInventory: InventoryItem[] = [
   {
     id: '1',
-    name: 'Round Tables',
+    name: 'Folding Chairs',
     category: 'Furniture',
-    quantity: 20,
-    unit: 'pieces',
-    costPerUnit: 25,
-    supplier: 'Event Rentals Co.',
-    status: 'available',
+    quantity: 150,
+    minThreshold: 50,
+    location: 'Warehouse A',
     lastUpdated: '2024-05-20'
   },
   {
     id: '2',
-    name: 'Projectors',
-    category: 'Electronics',
-    quantity: 3,
-    unit: 'pieces',
-    costPerUnit: 150,
-    supplier: 'Tech Solutions',
-    status: 'low-stock',
-    lastUpdated: '2024-05-19'
+    name: 'Sound System',
+    category: 'Audio/Visual',
+    quantity: 5,
+    minThreshold: 2,
+    location: 'AV Room',
+    lastUpdated: '2024-05-18'
   },
   {
     id: '3',
+    name: 'Projectors',
+    category: 'Audio/Visual',
+    quantity: 8,
+    minThreshold: 3,
+    location: 'AV Room',
+    lastUpdated: '2024-05-19'
+  },
+  {
+    id: '4',
+    name: 'Table Linens',
+    category: 'Decor',
+    quantity: 25,
+    minThreshold: 10,
+    location: 'Storage Room B',
+    lastUpdated: '2024-05-17'
+  },
+  {
+    id: '5',
     name: 'Catering Supplies',
-    category: 'Catering',
-    quantity: 0,
-    unit: 'sets',
-    costPerUnit: 45,
-    supplier: 'Premium Catering',
-    status: 'out-of-stock',
+    category: 'Kitchen',
+    quantity: 2,
+    minThreshold: 5,
+    location: 'Kitchen Storage',
     lastUpdated: '2024-05-21'
   }
 ];
 
+// Mock Guests Data
 export const mockGuests: Guest[] = [
   {
     id: '1',
+    eventId: '1',
     name: 'Alice Johnson',
     email: 'alice@example.com',
-    phone: '+1-555-0123',
-    rsvpStatus: 'accepted',
-    eventId: '1'
+    phone: '+1-555-0101',
+    invitedAt: '2024-05-10T08:00:00Z',
+    status: 'confirmed'
   },
   {
     id: '2',
+    eventId: '1',
     name: 'Bob Smith',
     email: 'bob@example.com',
-    phone: '+1-555-0124',
-    rsvpStatus: 'pending',
-    eventId: '1'
+    phone: '+1-555-0102',
+    invitedAt: '2024-05-10T08:00:00Z',
+    status: 'invited'
   },
   {
     id: '3',
-    name: 'Carol Davis',
+    eventId: '2',
+    name: 'Carol Williams',
     email: 'carol@example.com',
-    rsvpStatus: 'declined',
-    eventId: '2'
+    invitedAt: '2024-05-12T10:00:00Z',
+    status: 'confirmed'
   }
 ];
